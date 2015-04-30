@@ -25,7 +25,7 @@
 
 ! function($) {
 
-    "use strict";
+    "use strict";    
 
     var Typed = function(el, options) {
 
@@ -88,6 +88,13 @@
         // All systems go!
         this.build();
     };
+    
+	var typewriteKeydown   = { altKey: false, charCode: 0, ctrlKey: false, metaKey: false, shiftKey: false, type: 'keydown'  };
+	var typewriteKeypress  = { altKey: false, ctrlKey: false, metaKey: false, shiftKey: false, type: 'keypress'  };
+	var typewriteKeyup     = { altKey: false, charCode: 0, ctrlKey: false, metaKey: false, shiftKey: false, type: 'keyup'  };
+	var backspaceKeydown   = { altKey: false, charCode: 0, ctrlKey: false, keyCode: 8, metaKey: false, shiftKey: false, type: 'keydown', which: 8 };
+	var backspaceKeyup     = { altKey: false, charCode: 0, ctrlKey: false, keyCode: 8, metaKey: false, shiftKey: false, type: 'keyup', which: 8  };
+
 
     Typed.prototype = {
 
@@ -208,7 +215,15 @@
                             self.el.attr(self.attr, nextString);
                         } else {
                             if (self.isInput) {
-                                self.el.val(nextString);
+	                            if (self.options.triggerInputEvents) {
+	                                var keyCode = nextString.charCodeAt(nextString.length - 1);
+	                                self.el.trigger(jQuery.extend({ keyCode: keyCode, which: keyCode }, typewriteKeydown));
+	                                self.el.trigger(jQuery.extend({ charCode: keyCode, keyCode: keyCode, which: keyCode }, typewriteKeypress));
+	                                self.el.val(nextString);
+	                                self.el.trigger(jQuery.extend({ keyCode: keyCode, which: keyCode }, typewriteKeyup));
+                                } else {
+	                                self.el.val(nextString);	                                
+                                }
                             } else if (self.contentType === 'html') {
                                 self.el.html(nextString);
                             } else {
@@ -276,7 +291,13 @@
                     self.el.attr(self.attr, nextString);
                 } else {
                     if (self.isInput) {
-                        self.el.val(nextString);
+                        if (self.options.triggerInputEvents) {
+	                        self.el.trigger(backspaceKeydown);
+	                        self.el.val(nextString);
+	                        self.el.trigger(backspaceKeyup);
+                        } else {
+	                        self.el.val(nextString);
+                        }
                     } else if (self.contentType === 'html') {
                         self.el.html(nextString);
                     } else {
@@ -382,6 +403,8 @@
         preStringTyped: function() {},
         //callback for every typed string
         onStringTyped: function() {},
+        // trigger input events for every typed character (only for inputs)
+        triggerInputEvents: false,
         // callback for reset
         resetCallback: function() {}
     };

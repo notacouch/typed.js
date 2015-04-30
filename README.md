@@ -147,6 +147,8 @@ Customization
 			preStringTyped: function() {},
 			//callback for every typed string
 			onStringTyped: function() {},
+			// trigger input events for every typed character (only for inputs)
+			triggerInputEvents: false,
 			// callback for reset
 			resetCallback: function() {}
 		});
