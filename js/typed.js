@@ -63,6 +63,9 @@
         // input strings of text
         this.strings = this.options.strings;
 
+        // backspacing until needed
+        this.smartBack = this.options.smartBack;
+
         // character number position of current string
         this.strPos = 0;
 
@@ -305,6 +308,17 @@
                     }
                 }
 
+                // if smartBack is enabled
+                if (self.smartBack) {
+                    // and the remaining part of the current string is equal of the same part of the new string
+                    if (curString.substr(0, curStrPos) == self.strings[self.arrayPos+1].substr(0, curStrPos)) {
+                        // stop backspacing
+                        self.stopNum = curStrPos;
+                    } else {
+                        self.stopNum = 0;
+                    }
+                }
+
                 // if the number (id of character in current string) is
                 // less than the stop number, keep going
                 if (curStrPos > self.stopNum) {
@@ -413,6 +427,8 @@
         loopCount: false,
         // show cursor
         showCursor: true,
+        // backspacing until needed
+        smartBack: false,
         // character for cursor
         cursorChar: "|",
         // attribute to type (null == text)

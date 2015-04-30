@@ -129,6 +129,8 @@ Customization
 			backSpeed: 0,
 			// time before backspacing
 			backDelay: 500,
+			// backspacing until needed
+			smartBack: false,
 			// loop
 			loop: false,
 			// false = infinite
