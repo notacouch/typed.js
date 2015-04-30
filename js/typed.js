@@ -361,6 +361,28 @@
             }
             // Send the callback
             self.options.resetCallback();
+        },
+        
+        simpleReset: function() {
+            var self = this;
+            clearInterval(self.timeout);
+            if (self.isInput) {
+	            if (self.options.triggerInputEvents) {
+		            self.el.select();
+                    self.el.trigger(backspaceKeydown);
+                    self.el.val('');
+                    self.el.trigger(backspaceKeyup);
+	            } else {
+		            self.el.val('');
+		        }
+            } else {
+            	self.el.html('');
+            }
+            if (typeof this.cursor !== 'undefined') {
+                self.cursor.remove();
+            }
+            // Send the callback
+            self.options.resetCallback();
         }
 
     };
