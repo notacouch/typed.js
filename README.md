@@ -135,6 +135,8 @@ Customization
 			loop: false,
 			// false = infinite
 			loopCount: false,
+			// time before loop begins (replaces startDelay on 2nd iteration and afterwards)
+			loopDelay: 0,
 			// show cursor
 			showCursor: true,
 			// character for cursor

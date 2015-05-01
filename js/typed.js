@@ -53,6 +53,9 @@
 
         // add a delay before typing starts
         this.startDelay = this.options.startDelay;
+        
+        // add a delay before looping
+        this.loopDelay = this.options.loopDelay;
 
         // backspacing speed
         this.backSpeed = this.options.backSpeed;
@@ -87,6 +90,9 @@
 
         // custom cursor
         this.cursorChar = this.options.cursorChar;
+        
+        // choose between startDelay and loopDelay
+        this.ran = false;
 
         // All systems go!
         this.build();
@@ -109,9 +115,10 @@
             // current string will be passed as an argument each time after this
             var self = this;
             self.timeout = setTimeout(function() {
+	            if ( ! self.ran) self.ran = true;
                 // Start typing
                 self.typewrite(self.strings[self.arrayPos], self.strPos);
-            }, self.startDelay);
+            }, self.ran ? self.loopDelay: self.startDelay);
         }
 
         ,
@@ -425,6 +432,8 @@
         loop: false,
         // false = infinite
         loopCount: false,
+        // time before loop begins (replaces startDelay on 2nd iteration and afterwards)
+        loopDelay: 0,
         // show cursor
         showCursor: true,
         // backspacing until needed
